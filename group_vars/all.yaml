@@ -4,8 +4,11 @@ cubefs_package: cubefs-3.3.1-linux-amd64.tar.gz
 download_site: http://s3.jishu.idc/spider-internal-read/cubefs/
 cluster_name: cubefs
 cubefs_meta_memRatio: 75
-# 配置Consul地址, 需要提前配置好consul集群，并配置域名
+# 配置Consul地址, 需要提前配置好consul集群，并配置域名, 安装文件和下载地址根据实际情况进行修改
 consul_addr: http://cfsconsul.paas.idc
+consul_package: consul_1.15.2_linux_amd64.tar.gz
+consul_download_site: http://s3.jishu.idc/spider-internal-read/consul
+
 cubefs_master_host:
     - 10.130.100.36
     - 10.130.100.37
