@@ -1,5 +1,5 @@
 #### 修改hosts
-一共master（管理节点），meta（元数据节点），data（数据节点），object（对象存储节点）四种组件，将节点要安装的设置为True
+一共master（管理节点），meta（元数据节点），data（数据节点），object（对象存储节点）四种组件，将节点要安装的组件设置为True
 ```
 [cubefs]
 10.130.100.36 master=True meta=True data=True object=True
