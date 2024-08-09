@@ -16,11 +16,22 @@ ansible_ssh_port=22
 ```
 #### 修改group_vars/all.yaml
 配置示例如下
-```
+```yaml
 # 配置CubeFS安装信息
-cubefs_package: cubefs-3.3.0-linux-amd64.tar.gz
+# 这里填写CubeFS安装包名称和下载地址，根据实际情况进行调整
+cubefs_package: cubefs-3.3.1-linux-amd64.tar.gz
 download_site: http://s3.jishu.idc/spider-internal-read/cubefs/
-cluster_name: cubefs_cold
+cluster_name: cubefs
+cubefs_meta_memRatio: 75
+# 配置Consul地址, 需要提前配置好consul集群，并配置域名, 安装文件和下载地址根据实际情况进行修改
+consul_addr: http://cfsconsul.paas.idc
+consul_package: consul_1.15.2_linux_amd64.tar.gz
+consul_download_site: http://s3.jishu.idc/spider-internal-read/consul
+
+cubefs_master_host:
+    - 10.130.100.36
+    - 10.130.100.37
+    - 10.130.100.38
 
 # 配置数据盘的挂载路径
 mountmap:
