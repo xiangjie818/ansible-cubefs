@@ -1,0 +1,32 @@
+---
+- name: 创建Datanode目录
+  file:
+    path: '{{ item.path }}'
+    mode: '{{ item.mode }}'
+    state: directory
+  with_items:
+    - { path: '{{ cubefs_data_logDir }}', mode: '0755' }
+    - { path: '{{ cubefs_data_raftDir }}', mode: '0755' }
+  when:
+    - data is defined
+
+- name: 分发Datanode配置文件
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+  with_items:
+    - { src: datanode.json.j2, dest: '{{ cubefs_conf }}/datanode.json' }
+    - { src: datanode.service.j2, dest: '/usr/lib/systemd/system/cubefs-datanode.service' }
+  notify:
+    - Restart CubeFS-Datanode
+  when:
+    - data is defined
+
+- name: 启动Datanode
+  systemd:
+    name: cubefs-datanode
+    state: started
+    enabled: yes
+    daemon_reload: yes
+  when:
+    - data is defined

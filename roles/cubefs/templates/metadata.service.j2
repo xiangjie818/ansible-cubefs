@@ -1,0 +1,12 @@
+[Unit]
+Description=cubefs meta
+After=cubefs-master.target
+
+[Service]
+Type=simple
+User=root
+ExecStart={{ cubefs_bin }}/bin/cfs-server -f -c {{ cubefs_conf }}/metadata.json
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

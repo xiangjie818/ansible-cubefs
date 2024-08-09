@@ -1,0 +1,14 @@
+{% set hostname =  hostvars[inventory_hostname]['ansible_nodename'] %}
+{% set joinhost = groups['consul'][0] %}
+[Unit]
+Description=cubefs master
+After=network.target
+
+[Service]
+Type=simple
+User=root
+ExecStart={{ consul_basedir }}/consul agent -server -bootstrap-expect=3  -data-dir={{ consul_datadir }} -node={{ hostname }} -bind={{ inventory_hostname }}  -enable-script-checks=true -config-dir={{ consul_confdir }} -ui -client=0.0.0.0 -retry-join={{ joinhost }}
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,31 @@
+---
+- name: 创建Objectnode目录
+  file:
+    path: '{{ item.path }}'
+    mode: '{{ item.mode }}'
+    state: directory
+  with_items:
+    - { path: '{{ cubefs_object_logDir }}', mode: '0755' }
+  when:
+    - object is defined
+
+- name: 分发Objectnode配置文件
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+  with_items:
+    - { src: object.json.j2, dest: '{{ cubefs_conf }}/object.json' }
+    - { src: object.service.j2, dest: '/usr/lib/systemd/system/cubefs-object.service' }
+  notify:
+    - Restart CubeFS-Object
+  when:
+    - object is defined
+
+- name: 启动Object
+  systemd:
+    name: cubefs-object
+    state: started
+    enabled: yes
+    daemon_reload: yes
+  when:
+    - object is defined

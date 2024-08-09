@@ -1,0 +1,30 @@
+---
+- name: 下载CubeFS二进制包
+  get_url:
+    url: '{{ download_site }}{{ cubefs_package }}'
+    dest: /tmp
+    mode: 0644
+
+- name: 创建cubefs程序目录
+  file:
+    path: '{{ cubefs_bin }}'
+    mode: '0755'
+    state: directory
+
+- name: 解压程序包
+  unarchive:
+    src: /tmp/{{ cubefs_package }}
+    dest: /usr/local/cubefs
+
+- name: 配置PATH变量
+  lineinfile:
+    dest: /etc/profile
+    state: present
+    regexp: 'export PATH='
+    line: 'export PATH=$PATH:{{ cubefs_bin}}/bin'
+
+- name: 创建CubeFS配置文件目录
+  file:
+    path: '{{ cubefs_conf }}'
+    mode: '0755'
+    state: directory

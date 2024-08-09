@@ -1,0 +1,7 @@
+---
+- name: 对数据盘进行分区
+  sgdisk:
+    disk: "{{ item }}"
+    zap: "{{ zap }}"
+  with_items:
+    - "{{ mountmap.keys() }}"

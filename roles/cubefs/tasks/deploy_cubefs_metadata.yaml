@@ -1,0 +1,33 @@
+---
+- name: 创建Metadata目录
+  file:
+    path: '{{ item.path }}'
+    mode: '{{ item.mode }}'
+    state: directory
+  with_items:
+    - { path: '{{ cubefs_meta_logDir }}', mode: '0755' }
+    - { path: '{{ cubefs_meta_metadataDir }}', mode: '0755' }
+    - { path: '{{ cubefs_meta_raftDir }}', mode: '0755' }
+  when:
+    - meta is defined
+
+- name: 分发Metadata配置文件
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+  with_items:
+    - { src: metadata.json.j2, dest: '{{ cubefs_conf }}/metadata.json' }
+    - { src: metadata.service.j2, dest: '/usr/lib/systemd/system/cubefs-metadata.service' }
+  notify:
+    - Restart CubeFS-Metadata
+  when:
+    - meta is defined
+
+- name: 启动Metadata
+  systemd:
+    name: cubefs-metadata
+    state: started
+    enabled: yes
+    daemon_reload: yes
+  when:
+    - meta is defined

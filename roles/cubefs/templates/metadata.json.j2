@@ -1,0 +1,23 @@
+{
+    "role": "metanode",
+    "listen": "{{ cubefs_meta_port }}",
+    "prof": "{{ cubefs_meta_prof }}",
+    "consulAddr": "{{ consul_addr }}",
+    "logLevel": "{{ cubefs_meta_logLevel }}",
+    "metadataDir": "{{ cubefs_meta_metadataDir }}",
+    "logDir": "{{ cubefs_meta_logDir }}",
+    "raftDir": "{{ cubefs_meta_raftDir }}",
+    "raftHeartbeatPort": "{{ cubefs_meta_raftHeartbeatPort }}",
+    "raftReplicaPort": "{{ cubefs_meta_raftReplicaPort }}",
+    "exporterPort": {{ cubefs_meta_exporterPort }},
+    "memRatio": "{{ cubefs_meta_memRatio }}",
+    "masterAddr": [
+        {% for node in cubefs_master_host -%}
+        {% if loop.last %}
+        "{{ node + ':' + cubefs_master_port | string }}"
+        {% else %}
+        "{{ node + ':' + cubefs_master_port | string }}",
+        {% endif %}
+        {%- endfor %}
+    ]
+}

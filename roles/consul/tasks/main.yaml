@@ -1,0 +1,36 @@
+---
+- name: 下载Consul二进制包
+  get_url:
+    url: '{{ consul_download_url }}'
+    dest: /tmp
+    mode: 0644
+
+- name: 创建Consul目录
+  file:
+    path: '{{ item.path }}'
+    mode: '{{ item.mode }}'
+    state: directory
+  with_items:
+    - { path: '{{ consul_datadir }}', mode: '0755' }
+    - { path: '{{ consul_confdir }}', mode: '0755' }
+    
+- name: 解压程序包
+  unarchive:
+    src: '/tmp/{{ consul_package }}'
+    dest: '{{ consul_basedir }}'
+
+- name: 分发Consul配置文件
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+  with_items:
+    - { src: consul.service.j2, dest: '/usr/lib/systemd/system/consul.service' }
+  notify:
+    - Restart Consul
+
+- name: 启动Consul
+  systemd:
+    name: consul
+    state: started
+    enabled: yes
+    daemon_reload: yes

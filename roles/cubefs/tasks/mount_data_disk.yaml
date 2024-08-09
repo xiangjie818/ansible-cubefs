@@ -1,0 +1,29 @@
+---
+- name: 生成挂载配置文件
+  template:
+    src: mount_conf.j2
+    dest: "/usr/lib/systemd/system/{{ '-'.join(item.value.directory.split('/')[1:]) }}.mount"
+  with_dict:
+    - "{{ mountmap }}"
+  when:
+    - data is defined
+
+- name: 创建挂载目录
+  file:
+    path: "{{ item.value.directory }}"
+    state: directory
+  with_dict:
+    - "{{ mountmap }}"
+  when:
+    - data is defined
+
+- name: 启动挂载
+  systemd:
+    name: "{{ '-'.join(item.value.directory.split('/')[1:]) }}.mount"
+    state: started
+    daemon_reload: yes
+    enabled: yes
+  with_dict:
+    - "{{ mountmap }}"
+  when:
+    - data is defined

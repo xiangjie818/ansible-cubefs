@@ -1,0 +1,53 @@
+---
+cubefs_dir: /opt/cubefs
+cubefs_bin: /usr/local/cubefs
+cubefs_conf: "{{ cubefs_dir }}/conf"
+cubefs_log: "{{ cubefs_dir }}/log"
+
+# Master
+cubefs_master_dir: "{{ cubefs_dir }}/master"
+cubefs_master_port: 17010
+cubefs_master_prof: 17020
+cubefs_master_exporterPort: 9500
+cubefs_master_retainLogs: 20000
+cubefs_master_logLevel: info
+cubefs_master_metaNodeReservedMem: 1073741824
+cubefs_master_logDir: "{{ cubefs_log }}/master"
+cubefs_master_walDir: "{{ cubefs_master_dir }}/wal"
+cubefs_master_storeDir: "{{ cubefs_master_dir }}/store"
+
+# Metadata
+cubefs_meta_dir: "{{ cubefs_dir }}/metadata"
+cubefs_meta_port: 17210
+cubefs_meta_prof: 17220
+cubefs_meta_raftHeartbeatPort: 17230
+cubefs_meta_raftReplicaPort: 17240
+cubefs_meta_exporterPort: 9501
+cubefs_meta_logLevel: info
+cubefs_meta_logDir: "{{ cubefs_log }}/metadata"
+cubefs_meta_metadataDir: "{{ cubefs_meta_dir }}/meta"
+cubefs_meta_raftDir: "{{ cubefs_meta_dir }}/raft"
+#cubefs_meta_totalMem: "2147483648"
+cubefs_meta_memRatio: 75
+
+# Datanode
+cubefs_data_dir: "{{ cubefs_dir }}/datanode"
+cubefs_data_port: 17310
+cubefs_data_prof: 17320
+cubefs_data_raftHeartbeat: 17330
+cubefs_data_raftReplica: 17340
+cubefs_data_exporterPort: 9502
+cubefs_data_logLevel: info
+cubefs_data_logDir: "{{ cubefs_log }}/datanode"
+cubefs_data_raftDir: "{{ cubefs_data_dir }}/raft"
+cubefs_data_reservedspace: 1073741824
+
+# Objectnode
+cubefs_object_dir: "{{ cubefs_dir }}/objectnode"
+cubefs_object_port: 17410
+cubefs_object_prof: 17420
+cubefs_object_exporterPort: 9503
+cubefs_object_logLevel: info
+cubefs_object_logDir: "{{ cubefs_log }}/objectnode"
+cubefs_object_domains:
+  - test.cfs.local

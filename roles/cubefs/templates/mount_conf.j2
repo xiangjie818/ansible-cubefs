@@ -1,0 +1,15 @@
+{% set disk=item.key.split('/')[-1] + "1" %}
+{% set device_links=ansible_device_links.uuids %}
+{% set path=item.value.directory %}
+[Unit]
+Description=Auto mount minio partition {{ item.key }}1
+DefaultDependencies=no
+After=network.target
+
+[Mount]
+What=/dev/disk/by-uuid/{{ device_links[disk][0] }}
+Where={{ path }}
+Type=xfs
+
+[Install]
+WantedBy=multi-user.target

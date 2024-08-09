@@ -1,0 +1,35 @@
+{% set datadir = [] %}
+{% for item, config in mountmap.items() %}
+    {% set _ = datadir.append(config['directory']) %}
+    {% endfor %}
+
+{
+  "role": "datanode",
+  "listen": "{{ cubefs_data_port }}",
+  "prof": "{{ cubefs_data_prof }}",
+  "consulAddr": "{{ consul_addr }}",
+  "logDir": "{{ cubefs_data_logDir }}",
+  "logLevel": "{{ cubefs_data_logLevel }}",
+  "raftHeartbeat": "{{ cubefs_data_raftHeartbeat }}",
+  "raftReplica": "{{ cubefs_data_raftReplica }}",
+  "raftDir":"{{ cubefs_data_raftDir }}",
+  "exporterPort": {{ cubefs_data_exporterPort }},
+  "masterAddr": [
+     {% for node in cubefs_master_host -%}
+     {% if loop.last %}
+     "{{ node + ':' + cubefs_master_port | string }}"
+     {% else %}
+     "{{ node + ':' + cubefs_master_port | string }}",
+     {% endif %}
+     {%- endfor %}
+  ],
+  "disks": [
+     {% for dir in datadir -%}
+     {% if loop.last %}
+     "{{ dir + ':' + cubefs_data_reservedspace | string }}"
+     {% else %}
+     "{{ dir + ':' + cubefs_data_reservedspace | string }}",
+     {% endif %}
+     {%- endfor %}
+ ]
+}

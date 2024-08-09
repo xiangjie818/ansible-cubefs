@@ -1,0 +1,7 @@
+---
+- include_tasks: mount_data_disk.yaml
+- include_tasks: deploy_cubefs_common.yaml 
+- include_tasks: deploy_cubefs_master.yaml
+- include_tasks: deploy_cubefs_metadata.yaml
+- include_tasks: deploy_cubefs_datanode.yaml
+- include_tasks: deploy_cubefs_objectnode.yaml

@@ -1,0 +1,7 @@
+---
+consul_package: consul_1.15.2_linux_amd64.tar.gz
+consul_download_site: http://s3.jishu.idc/spider-internal-read/consul
+consul_download_url: '{{ consul_download_site }}/{{ consul_package }}'
+consul_basedir: /opt/consul
+consul_datadir: '{{ consul_basedir }}/data'
+consul_confdir: '{{ consul_basedir }}/consul.d'

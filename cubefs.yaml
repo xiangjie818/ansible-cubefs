@@ -1,0 +1,18 @@
+---
+  - hosts: cubefs
+    gather_facts: False
+    become: True
+    roles:
+      - prepare
+
+  - hosts: consul
+    gather_facts: True
+    become: True
+    roles:
+      - consul
+
+  - hosts: cubefs
+    gather_facts: True
+    become: True
+    roles:
+      - cubefs

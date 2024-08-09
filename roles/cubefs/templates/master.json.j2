@@ -1,0 +1,28 @@
+{# 配置变量 #}
+{% set masterid = groups['cubefs'].index(inventory_hostname) + 1 %}
+{# % set hostname =  hostvars[inventory_hostname]['ansible_nodename'] % #}
+{% set peers = [] -%}
+{% for node in cubefs_master_host -%} 
+    {% set nodeid = loop.index0 + 1 -%}
+    {% set item =  nodeid | string + ":" + node + ":" + cubefs_master_port | string -%}
+    {% set _ = peers.append(item) -%}
+{%- endfor %}
+
+{# 配置信息 #}
+{
+  "role": "master",
+  "ip": "{{ inventory_hostname }}",
+  "listen": "{{ cubefs_master_port }}",
+  "prof":"{{ cubefs_master_prof }}",
+  "consulAddr":"{{ consul_addr }}",
+  "exporterPort": {{ cubefs_master_exporterPort }},
+  "id":"{{ masterid }}",
+  "peers": "{{ ','.join(peers) }}",
+  "retainLogs":"{{ cubefs_master_retainLogs }}",
+  "logDir": "{{ cubefs_master_logDir }}",
+  "logLevel":"{{ cubefs_master_logLevel }}",
+  "walDir":"{{ cubefs_master_walDir }}",
+  "storeDir":"{{ cubefs_master_storeDir }}",
+  "clusterName":"{{ cluster_name }}",
+  "metaNodeReservedMem": "{{ cubefs_master_metaNodeReservedMem }}"
+}

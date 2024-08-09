@@ -1,0 +1,26 @@
+{
+    "role": "objectnode",
+    "domains": [
+        {% for domain in cubefs_object_domains -%}
+        {% if loop.last %}
+        "{{ domain }}"
+        {% else %}
+        "{{ domain }}",
+        {% endif %}
+        {%- endfor %}
+    ],
+    "listen": "{{ cubefs_object_port }}",
+    "exporterPort": {{ cubefs_object_exporterPort }},
+    "consulAddr": "{{ consul_addr }}",
+    "masterAddr": [
+        {% for node in cubefs_master_host -%}
+        {% if loop.last %}
+        "{{ node + ':' + cubefs_master_port | string }}"
+        {% else %}
+        "{{ node + ':' + cubefs_master_port | string }}",
+        {% endif %}
+        {%- endfor %}
+    ],
+    "logLevel": "{{ cubefs_object_logLevel }}",
+    "logDir": "{{ cubefs_object_logDir }}"
+}

@@ -1,0 +1,15 @@
+[cubefs]
+10.130.100.36 master=True meta=True data=True object=True
+10.130.100.37 master=True meta=True data=True object=True
+10.130.100.38 master=True meta=True data=True object=True
+10.130.2.60 meta=True data=True
+10.130.2.61 meta=True data=True
+10.130.2.62 meta=True data=True
+
+[consul]
+10.130.100.36
+10.130.100.37
+10.130.100.38
+
+[all:vars]
+ansible_ssh_port=22

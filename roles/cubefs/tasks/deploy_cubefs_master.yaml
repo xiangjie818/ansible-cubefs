@@ -1,0 +1,33 @@
+---
+- name: 创建Master目录
+  file:
+    path: '{{ item.path }}'
+    mode: '{{ item.mode }}'
+    state: directory
+  with_items:
+    - { path: '{{ cubefs_master_logDir }}', mode: '0755' }
+    - { path: '{{ cubefs_master_walDir }}', mode: '0755' }
+    - { path: '{{ cubefs_master_storeDir }}', mode: '0755' }
+  when:
+    - master is defined
+
+- name: 分发Master配置文件
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+  with_items:
+    - { src: master.json.j2, dest: '{{ cubefs_conf }}/master.json' }
+    - { src: master.service.j2, dest: '/usr/lib/systemd/system/cubefs-master.service' }
+  notify:
+    - Restart CubeFS-Master
+  when:
+    - master is defined
+
+- name: 启动Master
+  systemd:
+    name: cubefs-master
+    state: started
+    enabled: yes
+    daemon_reload: yes
+  when:
+    - master is defined
